@@ -1,0 +1,74 @@
+@use "sass:map";
+@use '../Layout.scss' as *;
+
+.ea-sidebar {
+  width: 200px;
+  z-index: 2;
+  position: sticky;
+  top: 0;
+  border-right: 1px solid var(--divider);
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  height: calc(100vh - #{$header-height});
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: column;
+  background-color: var(--background-default);
+  transition: all $animation;
+
+  &--compact {
+    max-width: 56px;
+  }
+
+  &__button {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 15px;
+    padding: 8px 16px;
+    transition: all $animation;
+    cursor: pointer;
+    position: relative;
+    color: var(--text-secondary);
+    border-right: 1.5px solid transparent;
+
+    &--active {
+      color: var(--primary);
+      border-right: 1.5px solid var(--primary);
+      background-color: var(--primary-opacity);
+    }
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.04);
+    }
+
+    &__label {
+      white-space: nowrap;
+      font-size: map.get($font_sizes, medium);
+    }
+
+    &__tag {
+      padding: 2px 5px;
+      border-radius: var(--radius);
+      font-size: map.get($font_sizes, small);
+
+      @each $color in $colors {
+        &--#{$color} {
+          background-color: var(--#{$color}-opacity);
+        }
+      }
+    }
+
+    &--active {
+      .ea-sidebar__button__icon {
+        color: var(--primary) !important;
+      }
+    }
+
+    &__icon {
+      color: var(--text-secondary) !important;
+    }
+  }
+}
