@@ -1,0 +1,1 @@
+export type { CallableOptions as Options } from 'firebase-functions/v2/https';
