@@ -1,0 +1,29 @@
+.ea-event-image-input {
+  width: 100%;
+  height: 174px;
+  position: relative;
+  overflow: hidden;
+
+  border-radius: var(--radius);
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  &__delete {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+
+    opacity: 0;
+    cursor: pointer;
+    transition: all $animation;
+    color: var(--error-contrast);
+
+    &:hover {
+      opacity: 1;
+      background-color: var(--error-opacity);
+    }
+  }
+
+}

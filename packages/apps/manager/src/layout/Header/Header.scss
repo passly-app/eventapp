@@ -1,0 +1,30 @@
+@use '../Layout.scss' as *;
+
+.ea-header {
+  height: $header-height;
+  color: var(--primary);
+  width: 100%;
+  padding: 0px 32px;
+  transition: all $animation;
+  border-bottom: 1px solid var(--divider);
+  background-color: var(--background-default);
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  @include for-sm {
+    padding: 0px 16px;
+  }
+
+  &__logo {
+    button {
+      border: none;
+      background-color: transparent;
+    }
+
+    img {
+      width: 100%;
+    }
+  }
+}

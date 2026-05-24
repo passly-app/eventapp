@@ -1,0 +1,54 @@
+$height: 72px;
+
+.ea-bottom-menu {
+  height: $height;
+  width: 100%;
+  padding: $proportion-base;
+  border-top: 1px solid var(--divider);
+  background-color: var(--background-default);
+
+  position: fixed;
+  bottom: 0;
+
+  gap: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: $spacing;
+
+  // animation;
+  transition: all $animation;
+  transform: translateY($height);
+
+  &--show {
+    transform: translateY(0);
+  }
+
+  &__button {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: column;
+
+    min-width: 80px;
+
+    border: none;
+    background-color: transparent;
+
+    color: var(--text-secondary);
+    transition: all $animation;
+    border-radius: var(--radius);
+
+    &:active {
+      color: var(--primary);
+      background: var(--primary-opacity);
+    }
+
+    &--active {
+      i {
+        color: var(--primary);
+      }
+    }
+  }
+}
