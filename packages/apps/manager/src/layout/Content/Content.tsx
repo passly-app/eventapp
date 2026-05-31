@@ -16,6 +16,7 @@ export default function Content({ children }: PropsWithChildren) {
     >
       <div style={{
         width: '100%',
+        height: '100%',
         maxWidth: '72rem',
         margin: 'auto'
       }}>

@@ -4,7 +4,7 @@ import { uuid } from '@eventapp/toolkit/uuid';
 import { decode } from '@eventapp/toolkit/jwt';
 import { Cookies, local } from '@eventapp/toolkit/dom';
 
-import type DB from '../../db';
+import type DB from '../../../../integrations/src/db';
 import { FirebaseUser } from '../../auth';
 import type { UserData } from './interface';
 
@@ -50,15 +50,15 @@ export default class UserServices {
     });
   }
 
-  async createByAuth(user: Pick<UserData, 'email' | 'name' | 'id'>) {
-    const { email } = user;
+  async createByAuth(user: Pick<UserData, 'email' | 'name' | 'id'> & { picture?: string }) {
+    const { email, picture } = user;
 
     const newUser: UserData = {
       ...user,
       roles: ['user'],
       plans: ['beta'],
       status: 'active',
-      picture: `https://robohash.org/${email}`,
+      picture: picture ?? `https://robohash.org/${email}`,
       createdAt: Timestamp.fromDate(new Date()),
     };
 

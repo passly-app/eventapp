@@ -24,5 +24,8 @@
     "typescript": "latest",
     "typescript-eslint": "^8.50.1"
   },
-  "packageManager": "yarn@3.2.1"
+  "packageManager": "yarn@3.2.1",
+  "dependencies": {
+    "@mdxeditor/editor": "^4.0.1"
+  }
 }

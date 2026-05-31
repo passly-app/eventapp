@@ -1,4 +1,5 @@
 import type { HTMLAttributes } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import Stack from '@iziui/react/Stack';
 import { joinClass } from '@iziui/react/core';
@@ -6,7 +7,6 @@ import { joinClass } from '@iziui/react/core';
 import Logo from '@eventapp/common/components/Logo';
 
 import './Header.scss';
-import { useNavigate } from 'react-router-dom';
 
 interface HeaderProps extends HTMLAttributes<HTMLDivElement> {
   buttonProfile: React.JSX.Element;

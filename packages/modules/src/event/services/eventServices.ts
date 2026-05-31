@@ -1,7 +1,7 @@
 import { uuid, hash } from '@eventapp/toolkit/uuid';
 import { slug } from '@eventapp/toolkit/string';
 
-import type DB from '../../db';
+import type DB from '../../../../integrations/src/db';
 import type { Event } from '../interface';
 
 export default class EventServices {

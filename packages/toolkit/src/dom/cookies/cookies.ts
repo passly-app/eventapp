@@ -22,7 +22,6 @@ export class Cookies<T extends string> {
     if (data) {
       const value = encrypt ? window.btoa(JSON.stringify(data)) : data;
       const domain = getDomain();
-      console.log('>>> domain', domain);
       this.save(key, value, { path, domain, sameSite: 'Lax', expires: expires || 1, });
     }
   }

@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@firebase/auth": "^1.9.1",
-    "@iziui/react": "^0.0.94-rc",
+    "@iziui/react": "^0.0.97-rc",
     "copy-to-clipboard": "^3.3.3",
     "firebase": "^11.4.0",
     "react": "^19.0.0",

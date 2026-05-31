@@ -21,7 +21,7 @@ import { useAuth } from '@eventapp/modules/auth';
 
 import Logo from '@eventapp/common/components/Logo';
 
-import { release } from '@/services/core';
+import { release, serverFunctions } from '@/services/core';
 
 type SignupForm = {
   name: string;
@@ -68,7 +68,9 @@ export default function Signup() {
 
         createByAuth({ email, name, password })
           .then(async (token) => {
-            console.log('>>> token', token);
+            const { url } = await serverFunctions.getFunction('onRedirect', { token });
+
+            window.open(url, '_self');
           })
           .finally(() => setLoading(false));
       },

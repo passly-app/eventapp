@@ -41,7 +41,7 @@ export enum Category {
 }
 
 interface Schedule {
-  startDatetime: Date;
+  startDate: Date;
   endDatetime: Date;
 }
 

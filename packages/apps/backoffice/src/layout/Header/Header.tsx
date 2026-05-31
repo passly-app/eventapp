@@ -23,7 +23,7 @@ export default function Header({
     <div {...props} className={className}>
       <div className="ea-header__logo">
         <button aria-label="Ir para tela inicial">
-          <Logo color="primary.main" />
+          <Logo width={100} color="primary.main" />
         </button>
       </div>
 

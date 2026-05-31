@@ -23,7 +23,9 @@
     "forceConsistentCasingInFileNames": true,
   },
   "include": [
-    "src"
+    "src",
+    "../integrations/src/db",
+    "../integrations/src/serverFunctions"
   ],
   "exclude": [
     "dist",

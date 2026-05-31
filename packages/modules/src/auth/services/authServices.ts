@@ -8,6 +8,8 @@ export interface FirebaseUser {
   email_verified: boolean;
   auth_time: number;
   user_id: string;
+  name?: string;
+  picture?: string;
   firebase: {
     identities: {
       email: Array<string>;
@@ -43,8 +45,6 @@ export default class AuthServices {
 
     return this.methods.googleAuth()
       .then(r => {
-        console.log('>>> token', r.user.accessToken);
-
         this.access_token = r.user.accessToken;
 
         return decode<FirebaseUser>(r._tokenResponse.idToken);

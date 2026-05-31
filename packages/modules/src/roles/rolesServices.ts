@@ -1,6 +1,6 @@
 import { slug } from '@eventapp/toolkit/string';
 
-import type DB from '../db';
+import type DB from '../../../integrations/src/db';
 import type { RoleConfig } from './interface';
 
 export default class RolesServices {

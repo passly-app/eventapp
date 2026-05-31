@@ -69,11 +69,8 @@ function EmailAndPasswordForm() {
   const goToSignup = () => { navigate('/signup'); };
 
   const handleLoginWithGoogle = async () => {
-    console.log('>>> LALAL');
     return loginWithGoogle()
       .then(async (token) => {
-        console.log('>>> token', token);
-
         const { url } = await serverFunctions.getFunction('onRedirect', { token });
 
         window.open(url, '_self');

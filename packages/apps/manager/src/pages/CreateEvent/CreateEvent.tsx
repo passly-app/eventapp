@@ -29,8 +29,8 @@ export default function CreateEvent() {
   };
 
   return (
-    <Slide enter>
-      <Stack>
+    <Slide enter style={{ height: '100%' }}>
+      <Stack style={{ height: '100%' }}>
         <Tabs fullWidth onChange={goTo} current={currentTab}>
           <TabButton label="Informações" icon={<Icon name="notes" />} />
           <TabButton label="Quando" icon={<Icon name="calendar-alt" />} />

@@ -1,11 +1,15 @@
 import type { SVGProps } from 'react';
 
+import { useTheme } from '@iziui/react';
+
 export default function PasslyLogo(props: SVGProps<SVGSVGElement>) {
+  const { theme: { palette } } = useTheme();
+
   const textProps = {
-    stroke: '#000',
+    stroke: palette.text.primary,
     strokeWidth: 4,
     strokeMiterlimit: 10,
-    fill: '#000',
+    fill: palette.text.primary,
   };
 
   return (

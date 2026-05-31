@@ -9,8 +9,6 @@ import { defineHandler } from '../defineHandler';
 export default defineHandler<{ token: string }>(async ({ request, context }) => {
   const token = request.data.token;
 
-  console.log('>>> token', token);
-
   const data = decode<FirebaseUser>(token);
 
   const { url } = context.env;

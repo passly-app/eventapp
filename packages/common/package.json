@@ -23,7 +23,7 @@
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
   },
   "dependencies": {
-    "@iziui/react": "^0.0.94-rc",
+    "@iziui/react": "^0.0.97-rc",
     "glob": "^11.0.1"
   },
   "devDependencies": {

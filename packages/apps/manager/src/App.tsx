@@ -5,6 +5,8 @@ import { ToastProvider } from '@iziui/react/Toast';
 
 import { createProvider, defineProvider } from '@eventapp/core/Provider';
 
+import { TranslationProvider } from '@eventapp/resources';
+
 import { AuthProvider } from '@eventapp/modules/auth';
 import { RolesProvider } from '@eventapp/modules/roles';
 import { EventProvider } from '@eventapp/modules/event';
@@ -21,6 +23,7 @@ import {
 } from '@/services/core';
 
 import Layout from './layout';
+import { locales } from './locales';
 
 const UIProviders = createProvider([
   defineProvider([ThemeProvider, { theme: createTheme(light) }]),
@@ -51,12 +54,16 @@ function Content() {
   );
 }
 
+console.log('>>> locales', locales);
+
 export default function App() {
   return (
     <UIProviders>
-      <Providers>
-        <Content />
-      </Providers>
+      <TranslationProvider locales={locales}>
+        <Providers>
+          <Content />
+        </Providers>
+      </TranslationProvider>
     </UIProviders>
   );
 };

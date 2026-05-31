@@ -11,7 +11,7 @@ import { getParams } from '@eventapp/toolkit/url';
 import { UserData, UserServices } from '../../user';
 import type AuthServices from '../services';
 
-type BasicUser = { name: string; email: string; password: string }
+type BasicUser = { name: string; email: string; password: string; picture?: string; }
 
 export interface AuthContextConfig {
   user?: UserData;
@@ -162,8 +162,9 @@ export default function AuthProvider({
 
       const createdUser = await userServices.createByAuth({
         id: googleUser?.user_id as string,
-        email: googleUser?.email || '',
-        name: ''
+        email: googleUser?.email ?? '',
+        name: googleUser?.name ?? '',
+        picture: googleUser.picture ?? ''
       });
 
       logger.info('usuario criado!', createdUser);
@@ -183,13 +184,18 @@ export default function AuthProvider({
     }
   };
 
-  const createByAuth = async ({ email, name, password }: BasicUser) => {
+  const createByAuth = async ({ email, name, password, picture }: BasicUser) => {
     try {
       const firebaseUser = await authServices.createUserWithPassword(email, password, { persist: true });
 
       logger.info('usuário criado no autenticador!', firebaseUser);
 
-      const user = await userServices.createByAuth({ id: firebaseUser?.user_id as string, email, name });
+      const user = await userServices.createByAuth({
+        id: firebaseUser?.user_id as string,
+        email,
+        name,
+        picture
+      });
 
       logger.info('usuario criado!', user);
 
