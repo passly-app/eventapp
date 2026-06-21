@@ -12,8 +12,9 @@ import {
 } from 'firebase/auth';
 import { getFunctions, httpsCallable, connectFunctionsEmulator } from 'firebase/functions';
 
-import DB from '@eventapp/modules/db';
-import ServerFunctions from '@eventapp/modules/serverFunctions';
+import DB from '@eventapp/integrations/db';
+import ServerFunctions from '@eventapp/integrations/serverFunctions';
+
 import { AuthServices } from '@eventapp/modules/auth';
 import { UserServices } from '@eventapp/modules/user';
 
@@ -49,7 +50,7 @@ const firestore = getFirestore(app);
 const functions = getFunctions(app, 'southamerica-east1');
 const googleProvider = new GoogleAuthProvider();
 
-// FIREBASE functions
+// FIREBASE FUNCTIONS
 export const serverFunctions = new ServerFunctions({
   onRedirect: httpsCallable<{ token: string }, { url: string }>(functions, 'onRedirect'),
 });

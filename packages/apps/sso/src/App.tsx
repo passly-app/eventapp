@@ -7,6 +7,8 @@ import { createProvider, defineProvider } from '@eventapp/core/Provider';
 
 import { AuthProvider } from '@eventapp/modules/auth';
 
+import { light } from '@eventapp/common/theme';
+
 import { authServices, userServices } from './services/core';
 
 function Content() {
@@ -16,7 +18,7 @@ function Content() {
 }
 
 const UIProviders = createProvider([
-  defineProvider([ThemeProvider, { theme: createTheme() }]),
+  defineProvider([ThemeProvider, { theme: createTheme(light) }]),
   defineProvider([ToastProvider]),
 ]);
 
