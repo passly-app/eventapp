@@ -12,7 +12,8 @@ import {
 } from 'firebase/auth';
 import { getFunctions, connectFunctionsEmulator } from 'firebase/functions';
 
-import DB from '@eventapp/modules/db';
+import DB from '@eventapp/integrations/db';
+
 import { AuthServices } from '@eventapp/modules/auth';
 import { UserServices } from '@eventapp/modules/user';
 import { RolesServices } from '@eventapp/modules/roles';

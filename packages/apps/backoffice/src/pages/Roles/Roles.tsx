@@ -142,7 +142,7 @@ export default function Roles() {
                       <Card onClick={() => handleSelectRole(role)}>
                         <CardContent>
                           <Stack flexDirection="row" alignItems="center">
-                            <Avatar icon={<Icon name="shield" />} />
+                            <Avatar color="secondary" icon={<Icon name="shield" />} />
                             <Typography variant="body1" color="text.secondary">
                               {role.name}
                             </Typography>

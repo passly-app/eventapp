@@ -5,8 +5,6 @@ import { ToastProvider } from '@iziui/react/Toast';
 
 import { createProvider, defineProvider } from '@eventapp/core/Provider';
 
-import { TranslationProvider, createLocale } from '@eventapp/resources';
-
 import { AuthProvider } from '@eventapp/modules/auth';
 import { RolesProvider } from '@eventapp/modules/roles';
 import type { UserData } from '@eventapp/modules/user';
@@ -56,11 +54,9 @@ function Content() {
 export default function App() {
   return (
     <UIProviders>
-      <TranslationProvider locales={createLocale()}>
-        <ModuleProviders>
-          <Content />
-        </ModuleProviders>
-      </TranslationProvider>
+      <ModuleProviders>
+        <Content />
+      </ModuleProviders>
     </UIProviders>
   );
 };

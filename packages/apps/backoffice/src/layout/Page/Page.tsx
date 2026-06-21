@@ -41,7 +41,7 @@ export default function BasePage({
     onMd: () => setPreferences({ orientation: 'row', align: 'center', fullWidth: false }),
     onLg: () => setPreferences({ orientation: 'row', align: 'center', fullWidth: false }),
     onXl: () => setPreferences({ orientation: 'row', align: 'center', fullWidth: false }),
-  }, []);
+  });
 
   const renderAction = (actionButton: React.JSX.Element) => {
     return cloneElement<ButtonProps>(actionButton, {
