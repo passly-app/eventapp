@@ -1,3 +1,5 @@
+import type { Timestamp } from 'firebase/firestore';
+
 export enum Subject {
   ACADEMIC_AND_SCIENTIFIC,
   AGRO,
@@ -40,17 +42,27 @@ export enum Category {
   RETREAT_OR_CAMP,
 }
 
+type Status = 'published' | 'draft';
+
 interface Schedule {
   startDate: Date;
-  endDatetime: Date;
+  endDate: Date;
 }
 
-type Address = any;
+type Address = {
+  id: string;
+  name: string;
+  description: string;
+  lat: number;
+  lon: number;
+};
 
 interface Ticket {
+  id: string;
   name: string;
-  count: string;
-  value: string;
+  value: number;
+  count: number;
+  free: boolean;
   schedule: Schedule;
   limits: {
     min: number;
@@ -64,6 +76,7 @@ export interface Event {
   ownerId: string;
   name: string;
   image: string;
+  status: Status;
   description: string;
   subject: Subject;
   category: Category;
@@ -71,3 +84,19 @@ export interface Event {
   address: Address;
   tickets: Ticket[];
 };
+
+export type SaveDraftAssing = Omit<Partial<Event>, 'schedule'> & {
+  schedule: {
+    endDate: Timestamp;
+    startDate: Timestamp;
+  }
+};
+
+interface ScheduleFirebase {
+  startDate: Timestamp;
+  endDate: Timestamp;
+}
+
+export interface EventFirebase extends Omit<Event, 'schedule'> {
+  schedule: ScheduleFirebase;
+}

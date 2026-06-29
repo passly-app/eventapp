@@ -12,7 +12,6 @@ export default function Content({ children }: PropsWithChildren) {
       sx={{
         backgroundColor: ({ background }) => background.paper
       }}
-      style={{ height: 'calc(100vh - 54px)' }}
     >
       <div style={{
         width: '100%',

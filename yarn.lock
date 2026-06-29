@@ -1180,7 +1180,7 @@ __metadata:
   resolution: "@eventapp/backoffice@workspace:packages/apps/backoffice"
   dependencies:
     "@firebase/auth": ^1.9.1
-    "@iziui/react": ^0.0.97-rc
+    "@iziui/react": ^0.0.109-rc
     "@types/react": ^19.0.10
     "@types/react-dom": ^19.0.4
     "@vitejs/plugin-react": ^4.3.4
@@ -1208,7 +1208,7 @@ __metadata:
   resolution: "@eventapp/common@workspace:packages/common"
   dependencies:
     "@chromatic-com/storybook": 1.9.0
-    "@iziui/react": ^0.0.97-rc
+    "@iziui/react": ^0.0.109-rc
     "@storybook/addon-essentials": 8.6.4
     "@storybook/addon-interactions": 8.6.4
     "@storybook/addon-links": 8.6.4
@@ -1280,12 +1280,36 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@eventapp/integrations@workspace:packages/integrations":
+  version: 0.0.0-use.local
+  resolution: "@eventapp/integrations@workspace:packages/integrations"
+  dependencies:
+    "@googlemaps/js-api-loader": ^2.0.2
+    "@types/google.maps": ^3.65.0
+    "@types/node": ^22.8.1
+    "@types/react-transition-group": ^4.4.12
+    eslint: ^8.44.0
+    i18next: ^26.2.0
+    i18next-browser-languagedetector: ^8.2.1
+    react-i18next: ^17.0.8
+    react-transition-group: ^4.4.5
+    ts-loader: ^9.5.1
+    ts-node: ^10.9.2
+    tsc: ^2.0.4
+    tsc-alias: ^1.8.11
+    tslib: ^2.4.0
+    typescript: latest
+    typescript-transform-paths: ^3.5.1
+  languageName: unknown
+  linkType: soft
+
 "@eventapp/manager@workspace:packages/apps/manager":
   version: 0.0.0-use.local
   resolution: "@eventapp/manager@workspace:packages/apps/manager"
   dependencies:
     "@firebase/auth": ^1.9.1
-    "@iziui/react": ^0.0.97-rc
+    "@googlemaps/js-api-loader": ^2.0.2
+    "@iziui/react": ^0.0.109-rc
     "@types/react": ^19.0.10
     "@types/react-dom": ^19.0.4
     "@vitejs/plugin-react": ^4.3.4
@@ -1366,7 +1390,7 @@ __metadata:
   resolution: "@eventapp/sso@workspace:packages/apps/sso"
   dependencies:
     "@firebase/auth": ^1.9.1
-    "@iziui/react": ^0.0.97-rc
+    "@iziui/react": ^0.0.109-rc
     "@types/react": ^19.0.10
     "@types/react-dom": ^19.0.4
     "@vitejs/plugin-react": ^4.3.4
@@ -2175,6 +2199,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@googlemaps/js-api-loader@npm:^2.0.2":
+  version: 2.0.2
+  resolution: "@googlemaps/js-api-loader@npm:2.0.2"
+  dependencies:
+    "@types/google.maps": ^3.53.1
+  checksum: 3a8b4d964a4a3aa427bdbb2b62f6d7a25c89d95486bf01fe3f8d6cba5a8f5b9fb76d04b964ed623d7adf92fa89283db649e096696860ecd7d4d3e9b74b12fe85
+  languageName: node
+  linkType: hard
+
 "@grpc/grpc-js@npm:^1.10.9":
   version: 1.14.3
   resolution: "@grpc/grpc-js@npm:1.14.3"
@@ -2332,9 +2365,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@iziui/react@npm:^0.0.97-rc":
-  version: 0.0.97-rc
-  resolution: "@iziui/react@npm:0.0.97-rc"
+"@iziui/react@npm:^0.0.109-rc":
+  version: 0.0.109-rc
+  resolution: "@iziui/react@npm:0.0.109-rc"
   dependencies:
     glob: ^13.0.2
     react: ^19.2.4
@@ -2342,7 +2375,7 @@ __metadata:
   peerDependencies:
     react: ^19.1.0
     react-dom: ^19.1.0
-  checksum: 559bbaf6c84f04bc83f670b764e6a668102f90c819b0641c082bccdec4521f36ddbd39ff975257a423e567441be6d88b860a8872130f658c5076704f76df5774
+  checksum: 8e0597fab7d282a30b560bb06a6b1a91ba3eb1a10112c74d114119247dfae78f98a1cad462be5ff6afbc51d85d79deb65bd8898cc5de2727a28e72d8882fe218
   languageName: node
   linkType: hard
 
@@ -5270,6 +5303,13 @@ __metadata:
     "@types/qs": "*"
     "@types/serve-static": ^1
   checksum: 285d16008489d37b2be03e2e050bcf201d5d6ed9278ca13619d9029efd2055b192b2445f769116f716cfcf53d9d799a03f4e76199af9cea0ea3dee3d88595931
+  languageName: node
+  linkType: hard
+
+"@types/google.maps@npm:^3.53.1, @types/google.maps@npm:^3.65.0":
+  version: 3.65.0
+  resolution: "@types/google.maps@npm:3.65.0"
+  checksum: 1f747a51452cea77f723a9b068ea4938bfdf1c9228706dbf82e85250febb7dec7830c8187160b02895b5760a5cd9674ed76d1c560a33ff6032397eb8add8ddea
   languageName: node
   linkType: hard
 

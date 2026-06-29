@@ -5,16 +5,16 @@
   "type": "module",
   "author": "leonardo.goncalves <leogoncalves.contato@gmail.com>",
   "scripts": {
-    "start:local": "env-cmd -f .env.dev vite --port 3000",
-    "start:stg": "env-cmd -f .env.stg vite --port 3000",
-    "start:prod": "env-cmd -f .env.prod vite --port 3000",
+    "start:local": "env-cmd -f .env.dev vite",
+    "start:stg": "env-cmd -f .env.stg vite",
+    "start:prod": "env-cmd -f .env.prod vite",
     "build": "tsc && vite build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview --port 3000"
   },
   "dependencies": {
     "@firebase/auth": "^1.9.1",
-    "@iziui/react": "^0.0.104-rc",
+    "@iziui/react": "^0.0.109-rc",
     "firebase": "^11.4.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

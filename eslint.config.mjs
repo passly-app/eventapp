@@ -48,6 +48,7 @@ export default [
             '/^@eventapp/toolkit/',
             '/^@eventapp/core/',
             '/^@eventapp/resources/',
+            '/^@eventapp/integrations/',
             '/^@eventapp/modules/',
             '/^@eventapp/common/',
             '/^@eventapp/',

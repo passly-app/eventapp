@@ -22,3 +22,7 @@ export function generateBytesSize(size: number, type: SizeUnit) {
 
   return size * units[type];
 }
+
+export function getExtension(fileName: string) {
+  return fileName.split('.').reverse()[0];
+}

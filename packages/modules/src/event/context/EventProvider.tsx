@@ -1,26 +1,38 @@
 import { createContext, useMemo, useState, type PropsWithChildren } from 'react';
 
-import { FormGroup } from '@iziui/react/lab/Form';
 import { useToast } from '@iziui/react/Toast';
 
 import logger from '@eventapp/toolkit/logger';
 
-import type { Event } from '../interface';
+import type { Event, SaveDraftAssing } from '../interface';
 import { EventServices } from '../services';
-import { type EventForm, useEventForm } from './useEventForm';
+
+type ToDraft = Partial<Event> & Pick<Event, 'name' | 'schedule'>;
 
 export interface EventContextConfig {
   myEvents: Event[];
-  form: { loading: boolean; formGroup: FormGroup<Partial<EventForm>> }
+  eventDetails?: Event;
+
   getMyEvents: (userId: string) => Promise<void>;
+  getEventDetails: (eventId: string) => Promise<Event | undefined>;
+
+  saveDraft: (data: ToDraft) => Promise<SaveDraftAssing>;
   createEvent: (data: Omit<Event, 'id'>) => Promise<void>;
+
+  deleteEvent: (eventId: string) => Promise<void>;
 }
 
 export const EventContext = createContext<EventContextConfig>({
   myEvents: [],
-  form: { loading: false, formGroup: new FormGroup({}, {}) },
+  eventDetails: undefined,
+
   getMyEvents: () => Promise.resolve(),
+  getEventDetails: () => Promise.resolve({} as Event),
+
+  saveDraft: () => Promise.resolve({} as SaveDraftAssing),
   createEvent: () => Promise.resolve(),
+
+  deleteEvent: () => Promise.resolve(),
 });
 
 export default function EventProvider({ eventServices, children }: PropsWithChildren<{
@@ -29,22 +41,32 @@ export default function EventProvider({ eventServices, children }: PropsWithChil
   const { addToast } = useToast();
 
   const [myEvents, setMyEvents] = useState<Event[]>([]);
-
-  const form = useEventForm();
+  const [eventDetails, setEventDetails] = useState<Event>();
 
   const context = useMemo<EventContextConfig>(() => ({
     myEvents,
-    form: {
-      loading: false,
-      formGroup: form.formGroup
-    },
+    eventDetails,
+
     getMyEvents: (userId) => getMyEvents(userId),
+    getEventDetails: (userId) => getEventDetails(userId),
+
+    saveDraft: (data) => saveDraft(data),
     createEvent: (data) => createEvent(data),
-  }), [myEvents, form]);
+
+    deleteEvent: (eventId) => deleteEvent(eventId),
+  }), [myEvents, eventDetails]);
 
   const getMyEvents = async (userId: string) => {
-    console.log('>>> userId', userId);
-    return;
+    return eventServices.getEvents(userId)
+      .then(events => setMyEvents(events));
+  };
+
+  const saveDraft = async (data: ToDraft) => {
+    return eventServices.saveDraft(data)
+      .then((newEvent) => {
+        addToast({ message: 'Rascunho salvo!', color: 'success' });
+        return newEvent;
+      });
   };
 
   const createEvent = async (data: Omit<Event, 'id'>) => {
@@ -57,6 +79,20 @@ export default function EventProvider({ eventServices, children }: PropsWithChil
         addToast({ message: 'Deu erro!', color: 'error' });
         logger.error('Erro na criação do serviço', e);
       });
+  };
+
+  const getEventDetails = async (eventId: string) => {
+    return eventServices.getDetails(eventId)
+      .then(event => {
+        if (!event) { return; };
+        setEventDetails(event);
+        return event;
+      });
+  };
+
+  const deleteEvent = async (eventId: string) => {
+    return eventServices.deleteEvent(eventId)
+      .then(() => setMyEvents(prev => prev.filter(e => e.id !== eventId)));
   };
 
   return (

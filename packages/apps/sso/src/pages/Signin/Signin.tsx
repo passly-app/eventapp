@@ -110,7 +110,6 @@ function EmailAndPasswordForm() {
         />
         <Button
           fullWidth
-          size="large"
           type="submit"
           data-cy="signin-submit"
           disabled={loading}
@@ -127,7 +126,6 @@ function EmailAndPasswordForm() {
         </Typography>
         <Button
           fullWidth
-          size="large"
           variant="outlined"
           type="button"
           startIcon={

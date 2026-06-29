@@ -24,8 +24,6 @@
   },
   "include": [
     "src",
-    "../integrations/src/db",
-    "../integrations/src/serverFunctions"
   ],
   "exclude": [
     "dist",

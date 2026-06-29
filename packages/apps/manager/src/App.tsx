@@ -54,8 +54,6 @@ function Content() {
   );
 }
 
-console.log('>>> locales', locales);
-
 export default function App() {
   return (
     <UIProviders>

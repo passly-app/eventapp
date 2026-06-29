@@ -20,6 +20,7 @@
     "lint": "eslint --ext .ts . --ignore-pattern '/dist'"
   },
   "dependencies": {
+    "@googlemaps/js-api-loader": "^2.0.2",
     "i18next": "^26.2.0",
     "i18next-browser-languagedetector": "^8.2.1",
     "react-i18next": "^17.0.8",
@@ -27,6 +28,7 @@
     "tslib": "^2.4.0"
   },
   "devDependencies": {
+    "@types/google.maps": "^3.65.0",
     "@types/node": "^22.8.1",
     "@types/react-transition-group": "^4.4.12",
     "eslint": "^8.44.0",

@@ -37,7 +37,7 @@ export default function Layout({ children }: PropsWithChildren) {
   };
 
   return (
-    <Stack gap={0}>
+    <Stack gap={0} style={{ height: '100%' }}>
       <Slide enter direction="top" timeout={.3}>
         <Header
           compact={isMobile}

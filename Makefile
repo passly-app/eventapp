@@ -51,7 +51,8 @@ install:
 setup:
 	make clean-modules
 	$(RUN) install
-	make run tokens build
+	make run toolkit build
+	make run modules build
 
 define delete_dependencies
 	@echo delete_dependencies $(1)
@@ -62,17 +63,22 @@ clean-modules:
 	rm -Rf ./node_modules
 	rm -Rf yarn.lock
 	$(call delete_dependencies,apps/sso)
+	$(call delete_dependencies,apps/manager)
+	$(call delete_dependencies,apps/backoffice)
+	$(call delete_dependencies,functions)
+	$(call delete_dependencies,integrations)
 	$(call delete_dependencies,core)
 	$(call delete_dependencies,modules)
 	$(call delete_dependencies,toolkit)
+	$(call delete_dependencies,resources)
 	@printf "${SUCCESS_TEXT}Dependencies deleted successfully ${RESET_TEXT}\n";
 
 # -------------------- EMULADOR ------------------- #
 
 # CUIDADO: Este comando irá sobrescrever o path mock
 db-write:
-	@cd packages/db && firebase emulators:start --import ./mock --export-on-exit ./mock
+	@cd packages/emulator && firebase emulators:start --import ./mock --export-on-exit ./mock
 
 db:
 	@printf "${WARN_TEXT} Starting Firestore emulator...${RESET_TEXT}"
-	@cd packages/db && firebase emulators:start --import ./mock
+	@cd packages/emulator && firebase emulators:start --import ./mock

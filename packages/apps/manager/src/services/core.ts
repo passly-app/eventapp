@@ -10,9 +10,13 @@ import {
   createUserWithEmailAndPassword,
   sendPasswordResetEmail,
 } from 'firebase/auth';
+import { connectStorageEmulator, getStorage } from 'firebase/storage';
 import { getFunctions, connectFunctionsEmulator } from 'firebase/functions';
 
-import DB from '@eventapp/modules/db';
+import DB from '@eventapp/integrations/db';
+import Storage from '@eventapp/integrations/storage';
+import GoogleMaps from '@eventapp/integrations/googleMaps';
+
 import { AuthServices } from '@eventapp/modules/auth';
 import { UserServices } from '@eventapp/modules/user';
 import { RolesServices } from '@eventapp/modules/roles';
@@ -44,12 +48,13 @@ const app = initializeApp({
   storageBucket: import.meta.env.VITE_STORAGE_BUCKET,
   measurementId: import.meta.env.VITE_MEASUREMENT_ID,
   messagingSenderId: import.meta.env.VITE_MESSAGING_SENDER_ID,
-}, 'backoffice');
+}, 'manager');
 
 // FIREBASE SERVICES
 const firebaseAuth = getAuth(app);
 const firestore = getFirestore(app);
 const functions = getFunctions(app, 'southamerica-east1');
+const firebaseStorage = getStorage(app);
 const googleProvider = new GoogleAuthProvider();
 
 export const authServices = new AuthServices({
@@ -65,11 +70,20 @@ export const authServices = new AuthServices({
 });
 
 export const db = new DB(firestore);
+export const storage = new Storage(firebaseStorage);
+
+// GOOGLE MAPS
+export const googleMaps = new GoogleMaps({
+  key: import.meta.env.VITE_GOOGLE_MAPS_KEY,
+  language: 'pt-BR',
+  region: 'BR',
+});
 
 if (isLocal) {
   connectFirestoreEmulator(firestore, emulatorHost, 8080);
   connectAuthEmulator(firebaseAuth, `http://${emulatorHost}:9099`);
   connectFunctionsEmulator(functions, emulatorHost, 5001);
+  connectStorageEmulator(firebaseStorage, emulatorHost, 9199);
 }
 
 // ENTITY SERVICES

@@ -1,3 +1,4 @@
+export * from './date';
 export * from './dom';
 export * from './enum';
 export * from './file';
@@ -5,6 +6,7 @@ export * from './interface';
 export * from './jwt';
 export * from './logger';
 export * from './mask';
+export * from './promise';
 export * from './string';
 export * from './url';
 export * from './uuid';
