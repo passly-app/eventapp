@@ -19,6 +19,8 @@ export default function EventLocation() {
   const [loading, setLoading] = useState(false);
   const [suggestions, setSuggestions] = useState<AddressSuggestion[]>([]);
 
+  console.log('>>> formGroup', formGroup.values.address);
+
   const handleSearch = async (value: string) => {
     setLoading(true);
     const suggestions = await googleMaps.getAddressSuggestions({
@@ -69,6 +71,7 @@ export default function EventLocation() {
               startIcon={<Icon name="search" color="grey" />}
               options={suggestions}
               loading={loading}
+              value={formGroup.values.address as any}
               emptyContent={
                 <Typography color="grey.main" variant="body2" textAlign="center">
                   Nenhum local encontrado

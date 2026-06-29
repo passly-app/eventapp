@@ -26,3 +26,26 @@ export function generateBytesSize(size: number, type: SizeUnit) {
 export function getExtension(fileName: string) {
   return fileName.split('.').reverse()[0];
 }
+
+export async function urlToFile(
+  url: string,
+  fileName: string,
+  mimeType?: string,
+): Promise<File> {
+  const response = await fetch(url);
+
+  if (!response.ok) {
+    throw new Error('Não foi possível baixar a imagem');
+  }
+
+  const blob = await response.blob();
+
+  return new File(
+    [blob],
+    fileName,
+    {
+      type: mimeType ?? blob.type,
+      lastModified: Date.now(),
+    },
+  );
+}

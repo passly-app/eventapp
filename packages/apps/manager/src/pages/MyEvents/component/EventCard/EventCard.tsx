@@ -84,22 +84,36 @@ export default function EventCard({
   return (
     <Card className="event-card">
       <Box className={headerClss}
-        sx={{ background: ({ primary }) => getLinearGradient(primary.main) }}
+        sx={{ background: ({ secondary }) => getLinearGradient(secondary.main) }}
       >
-        <Icon
-          size={45}
-          name="image-v"
-          className="event-card__header__icon"
-        />
-        <Stack className="event-card__header__info" flexDirection="row" justifyContent="space-between">
+        {
+          event.image && <img src={event.image} loading="lazy" alt="capa" />
+        }
+        {
+          !event.image && (
+            <Icon
+              size={45}
+              name="image-v"
+              className="event-card__header__icon"
+            />
+          )
+        }
+        <Stack
+          flexDirection="row"
+          justifyContent="space-between"
+          className="event-card__header__info"
+        >
           <Chip
             color={color}
             label={label}
-            sx={{ color: (palette) => palette[color].light }}
+            sx={{
+              color: (palette) => palette[color].dark,
+              backgroundColor: ({ background }) => background.default,
+            }}
             icon={
               <Box
                 className="event-card__header__info__bullet"
-                sx={{ backgroundColor: (palette) => palette[color].light }}
+                sx={{ backgroundColor: (palette) => palette[color].dark }}
               />}
           />
           <ButtonIcon
@@ -114,8 +128,8 @@ export default function EventCard({
           </ButtonIcon>
         </Stack>
       </Box>
-      <CardContent>
-        <Stack gap={8}>
+      <CardContent style={{ height: '100%' }}>
+        <Stack gap={8} justifyContent="space-between" style={{ height: '100%' }}>
           <InfoSlot {...event} />
           <Divider />
           <StatusSlot />

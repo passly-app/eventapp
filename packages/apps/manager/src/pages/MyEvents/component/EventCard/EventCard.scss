@@ -1,15 +1,32 @@
 .event-card {
   transition: all $animation;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
 
   &__header {
     width: 100%;
-    height: 115px;
-    min-height: 115px;
+    height: 215px;
+    min-height: 215px;
 
     position: relative;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      display: block;
+    }
 
     &__info {
       padding: 16px;
+
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
 
       &__bullet {
         width: 7px;

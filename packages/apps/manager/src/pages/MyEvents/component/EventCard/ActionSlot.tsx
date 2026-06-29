@@ -21,6 +21,7 @@ export default function ActionSlot({ goToEvent }: ActionSlotProps) {
         </Button>
         <Button
           fullWidth
+          color="secondary"
           startIcon={<Icon name="external-link-alt" />}
         >
           Ver evento

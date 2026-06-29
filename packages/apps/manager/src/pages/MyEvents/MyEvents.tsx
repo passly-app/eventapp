@@ -6,7 +6,6 @@ import Input from '@iziui/react/Input';
 import Button from '@iziui/react/Button';
 import Loading from '@iziui/react/Loading';
 import Typography from '@iziui/react/Typography';
-import Slide from '@iziui/react/animations/Slide';
 import { Grid, GridItem } from '@iziui/react/Grid';
 
 import { wait } from '@eventapp/toolkit/promise';
@@ -70,11 +69,9 @@ export default function MyEvents() {
               {
                 myEvents.map(event => (
                   <GridItem key={event.id}>
-                    <Slide enter direction="top" style={{ width: '100%' }}>
-                      <EventCard
-                        event={event}
-                      />
-                    </Slide>
+                    <EventCard
+                      event={event}
+                    />
                   </GridItem>
                 ))
               }

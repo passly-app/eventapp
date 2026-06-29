@@ -19,7 +19,7 @@ import { getExtension } from '@eventapp/toolkit/file';
 import { toEnum, byEnum } from '@eventapp/toolkit/enum';
 
 import { useAuth } from '@eventapp/modules/auth';
-import { useEvent } from '@eventapp/modules/event';
+import { Category, Subject, useEvent } from '@eventapp/modules/event';
 
 import { storage } from '@/services/core';
 
@@ -84,12 +84,13 @@ function EventStepFormContent() {
   }, [location]);
 
   const goTo = (tabIndex: number) => {
-    navigate(
-      generatePath(`/criar-evento/${toEnum(CreateEvenMap, tabIndex)}`)
-    );
+    const path = params.eventId
+      ? generatePath(`/editar-evento/:eventId/${toEnum(CreateEvenMap, tabIndex)}`, { eventId: params.eventId })
+      : generatePath(`/criar-evento/${toEnum(CreateEvenMap, tabIndex)}`);
+    navigate(path);
   };
 
-  const handleSaveDraft = () => {
+  const handleSaveDraft = async () => {
     const values = formGroup.values;
 
     if (!values.name) {
@@ -110,31 +111,34 @@ function EventStepFormContent() {
     const start = getFallbackDate(values.startDate, values.startTime);
     const end = getFallbackDate(values.endDate, values.endTime);
 
+    let url = '';
+
     if (file) {
       const ext = getExtension(file.name);
       const name = `capa.${ext}`;
 
-      storage.upload({
+      url = await storage.upload({
         file,
-        path: `${id}/${name}`
+        path: `${user?.id}/${id}/${name}`
       });
+
     }
 
-    // saveDraft({
-    //   id,
-    //   image: '',
-    //   ownerId: user?.id,
-    //   name: values.name ?? '',
-    //   subject: values.subject ?? '' as any,
-    //   category: values.category ?? '' as any,
-    //   description: values.description ?? '',
-    //   tickets: values.tickets ?? [],
-    //   address: values.address ?? {} as any,
-    //   schedule: {
-    //     startDate: new Date(`${start.date}T${start.time}`),
-    //     endDate: new Date(`${end.date}T${end.time}`),
-    //   },
-    // }).then(({ id }) => setEventId(id));
+    saveDraft({
+      id,
+      image: url,
+      ownerId: user?.id,
+      name: values.name ?? '',
+      subject: values.subject ? toEnum(Subject, values.subject) : '' as any,
+      category: values.category ? toEnum(Category, values.category) : '' as any,
+      description: values.description ?? '',
+      tickets: values.tickets ?? [],
+      address: values.address ?? {} as any,
+      schedule: {
+        startDate: new Date(`${start.date}T${start.time}`),
+        endDate: new Date(`${end.date}T${end.time}`),
+      },
+    }).then(({ id }) => setEventId(id));
   };
 
   return (
@@ -208,8 +212,10 @@ function EventStepFormContent() {
 }
 
 export default function EventStepForm() {
+  const { eventId } = useParams();
+
   return (
-    <EventFormProvider>
+    <EventFormProvider key={eventId ?? 'new'}>
       <EventStepFormContent />
     </EventFormProvider>
   );

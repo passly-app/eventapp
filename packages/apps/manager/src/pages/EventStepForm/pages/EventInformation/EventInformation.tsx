@@ -44,38 +44,52 @@ export default function EventInformation() {
                   )}
                 />
                 <EventImageInput />
-                <Select
-                  placeholder="Selecione o assunto"
-                  label="Assunto"
-                  position="top"
-                >
-                  {
-                    Object
-                      .values(Subject)
-                      .filter((value) => typeof value === 'string')
-                      .map(s => (
-                        <Option key={s} value={s}>
-                          {t(`SUBJECTS.${s as keyof typeof Subject}`)}
-                        </Option>
-                      ))
-                  }
-                </Select>
-                <Select
-                  placeholder="Selecione a categoria"
-                  label="Categoria"
-                  position="top"
-                >
-                  {
-                    Object
-                      .values(Category)
-                      .filter((value) => typeof value === 'string')
-                      .map(s => (
-                        <Option key={s} value={s}>
-                          {t(`CATEGORIES.${s as keyof typeof Category}`)}
-                        </Option>
-                      ))
-                  }
-                </Select>
+                <Control
+                  controlName="subject"
+                  action="change"
+                  field={(control) => (
+                    <Select
+                      placeholder="Selecione o assunto"
+                      label="Assunto"
+                      position="top"
+                      value={control.value}
+                    >
+                      {
+                        Object
+                          .values(Subject)
+                          .filter((value) => typeof value === 'string')
+                          .map(s => (
+                            <Option key={s} value={s}>
+                              {t(`SUBJECTS.${s as keyof typeof Subject}`)}
+                            </Option>
+                          ))
+                      }
+                    </Select>
+                  )}
+                />
+                <Control
+                  controlName="category"
+                  action="change"
+                  field={(control) => (
+                    <Select
+                      placeholder="Selecione a categoria"
+                      label="Categoria"
+                      position="top"
+                      value={control.value}
+                    >
+                      {
+                        Object
+                          .values(Category)
+                          .filter((value) => typeof value === 'string')
+                          .map(s => (
+                            <Option key={s} value={s}>
+                              {t(`CATEGORIES.${s as keyof typeof Category}`)}
+                            </Option>
+                          ))
+                      }
+                    </Select>
+                  )}
+                />
               </Stack>
             </Form>
           </Stack>
