@@ -162,9 +162,6 @@ function EventStepFormContent() {
               >
                 Salvar rascunho
               </Button>
-              <Button variant="outlined" startIcon={<Icon name="eye" />}>
-                Pré-visualizar
-              </Button>
               <Button
                 color="success"
                 startIcon={<Icon name="rocket" />}
@@ -199,10 +196,6 @@ function EventStepFormContent() {
             label="Salvar rascunho"
             icon={<Icon name="save" />}
             onClick={handleSaveDraft}
-          />
-          <MenuButton
-            label="Pré-visualizar"
-            icon={<Icon name="eye" />}
           />
         </Menu>
         <Outlet />

@@ -3,16 +3,16 @@ import { useState } from 'react';
 import Icon from '@iziui/react/Icon';
 import Stack from '@iziui/react/Stack';
 import Button from '@iziui/react/Button';
-import { Form } from '@iziui/react/lab/Form';
-import Slide from '@iziui/react/animations/Slide';
-import { Modal, ModalFooter, useModal } from '@iziui/react/Modal';
 import Typography from '@iziui/react/Typography';
+import { Modal, ModalFooter, useModal } from '@iziui/react/Modal';
 
 import { uuid } from '@eventapp/toolkit/uuid';
 
 import type { Event } from '@eventapp/modules/event';
 
+import EventTicketList from './components/EventTicketList';
 import EventTicketForm from './components/EventTicketForm';
+import EventTicketCapability from './components/EventTicketCapability';
 import { useEventForm } from '../../components/EventForm';
 
 function getNewTicket(): Event['tickets'][number] {
@@ -20,13 +20,13 @@ function getNewTicket(): Event['tickets'][number] {
     id: uuid(),
     name: '',
     description: '',
-    free: false,
+    free: true,
     count: 0,
     value: 0,
     limits: { min: 1, max: 5 },
     schedule: {
       startDate: new Date(),
-      endDatetime: new Date(),
+      endDate: new Date(),
     }
   };
 };
@@ -94,23 +94,18 @@ export default function EventTickets() {
 
   return (
     <Stack>
-      <Form formGroup={formGroup}>
-        <Stack>
-          {
-            formGroup.values.tickets && formGroup.values.tickets.map((ticket, index) => (
-              <Slide enter key={ticket.id}>
-                <EventTicketForm
-                  index={index}
-                  ticket={ticket}
-                  onCopy={cloneTicket}
-                  onChange={updateTicket}
-                  onDelete={handleModal}
-                />
-              </Slide>
-            ))
-          }
-        </Stack>
-      </Form>
+      <EventTicketCapability />
+      <EventTicketList
+        renderList={(ticket, index) => (
+          <EventTicketForm
+            index={index}
+            ticket={ticket}
+            onCopy={cloneTicket}
+            onChange={updateTicket}
+            onDelete={handleModal}
+          />
+        )}
+      />
       <Button
         fullWidth
         size="large"
@@ -118,6 +113,7 @@ export default function EventTickets() {
         variant="outlined"
         startIcon={<Icon name="plus" />}
         onClick={handleAddTicket}
+        sx={{ boxShadow: 'sm' }}
       >
         Adicionar ingresso
       </Button>

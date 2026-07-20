@@ -1,13 +1,11 @@
 import Icon from '@iziui/react/Icon';
-import Chip from '@iziui/react/Chip';
 import Stack from '@iziui/react/Stack';
 import Input from '@iziui/react/Input';
 import Alert from '@iziui/react/Alert';
-import Divider from '@iziui/react/Divider';
 import Textarea from '@iziui/react/Textarea';
-import Slide from '@iziui/react/animations/Slide';
 import Typography from '@iziui/react/Typography';
 import ButtonIcon from '@iziui/react/ButtonIcon';
+import Slide from '@iziui/react/animations/Slide';
 import { Grid, GridItem } from '@iziui/react/Grid';
 import { Card, CardContent } from '@iziui/react/Card';
 
@@ -15,6 +13,11 @@ import { maskCurrency, sanitizeOnlyNumbers } from '@eventapp/toolkit/mask';
 
 import type { Event } from '@eventapp/modules/event';
 
+import EventTicketFormType from './EventTicketFormType';
+import EventTicketFormLimit from './EventTicketFormLimit';
+import EventTicketFormHeader from './EventTicketFormHeader';
+
+import './EventTicketForm.scss';
 interface EventTicketFormProps<E extends Event['tickets'][number]> {
   index: number;
   ticket: E;
@@ -40,32 +43,83 @@ export default function EventTicketForm<
     T extends E[K]
   >(key: K, value: T) => { onChange(key, index, value); };
 
+  const TAX = 0.1;
+
   const handleCopy = () => { onCopy(ticket.id); };
   const handleDelete = () => { onDelete(ticket.id); };
 
   return (
-    <Card fullWidth>
+    <Card fullWidth className="event-ticket-form">
       <CardContent>
         <Stack>
           <Stack flexDirection="row" alignItems="center" justifyContent="space-between">
-            <Typography fullWidth variant="body2" color="text.secondary">
-              Ingresso {index + 1}
-            </Typography>
+            <EventTicketFormHeader ticket={ticket} index={index} />
             <Stack flexDirection="row" justifyContent="flex-end">
-              <ButtonIcon color="error" size={32} onClick={handleDelete}>
-                <Icon name="trash" />
-              </ButtonIcon>
-              <ButtonIcon color="grey" size={32} onClick={handleCopy}>
+              <ButtonIcon type="button" color="grey" size={32} onClick={handleCopy}>
                 <Icon name="copy" />
+              </ButtonIcon>
+              <ButtonIcon type="button" color="grey" size={32} onClick={handleDelete}>
+                <Icon name="trash" />
               </ButtonIcon>
             </Stack>
           </Stack>
           <Input
             label="Nome do ingresso"
+            placeholder="Ex: Pista, VIP ou Meia-entrada"
             value={ticket.name}
             onChange={(e) => handleChange('name', e.target.value)}
           />
-          <Grid lg={6}>
+          <EventTicketFormType
+            isFree={ticket.free}
+            onChange={(isFree) => handleChange('free', isFree)}
+          />
+          <Grid>
+            <GridItem lg={6} sm={12}>
+              <Input
+                type="number"
+                placeholder="Ex: 100"
+                label="Quantidade de ingressos"
+                onChange={(e) => handleChange('count', Number(e.target.value))}
+              />
+            </GridItem>
+            {
+              !ticket.free && (
+                <>
+                  <GridItem lg={6} sm={12}>
+                    <Slide enter>
+                      <Input
+                        type="tel"
+                        label="Preço"
+                        placeholder="R$ 0,00"
+                        value={maskCurrency(ticket.value)}
+                        onChange={(e) => handleChange('value', Number(sanitizeOnlyNumbers(e.target.value)))}
+                      />
+                    </Slide>
+                  </GridItem>
+                  {
+                    Boolean(ticket.value) && (
+                      <GridItem lg={12}>
+                        <Slide enter>
+                          <Alert color="info" icon={<Icon name="info-circle" />}>
+                            <Typography variant="body2">
+                              Taxa de serviço de {maskCurrency(ticket.value * TAX)} por ingresso vendido
+                            </Typography>
+                          </Alert>
+                        </Slide>
+                      </GridItem>
+                    )
+                  }
+                </>
+              )
+            }
+          </Grid>
+          <Textarea
+            label="Descrição (opcional)"
+            placeholder="Conte o que está incluso nesse ingresso"
+            helperText="0/240 caracteres"
+          />
+          <EventTicketFormLimit />
+          {/* <Grid lg={6}>
             <GridItem alignSelf="flex-end">
               <Stack gap={8} style={{ marginBottom: 16 }}>
                 <Typography variant="body2" style={{ fontSize: 12 }}>
@@ -110,13 +164,27 @@ export default function EventTicketForm<
                     <Typography variant="body2">{maskCurrency(ticket.value)}</Typography>
                   </Stack>
                   <Stack flexDirection="row" justifyContent="space-between" alignItems="center">
-                    <Typography variant="body2">Taxa:</Typography>
-                    <Typography variant="body2">{maskCurrency(ticket.value * 0.1)}</Typography>
+                    <Stack
+                      gap={8}
+                      alignItems="center"
+                      flexDirection="row"
+                      style={{ width: 'fit-content' }}
+                    >
+                      <Typography variant="body2">Taxa:</Typography>
+                      <Icon
+                        name="info-circle"
+                        color="grey"
+                        size={16}
+                      />
+                    </Stack>
+                    <Typography variant="body2">
+                      {maskCurrency(ticket.value * TAX)}
+                    </Typography>
                   </Stack>
                   <Divider />
                   <Stack flexDirection="row" justifyContent="space-between" alignItems="center">
                     <Typography variant="body2">Valor final para o participante:</Typography>
-                    <Typography variant="body2">{maskCurrency(ticket.value * 1.1)}</Typography>
+                    <Typography variant="body2">{maskCurrency(ticket.value * (TAX + 1))}</Typography>
                   </Stack>
                 </Stack>
               </Alert>
@@ -133,8 +201,8 @@ export default function EventTicketForm<
             <GridItem lg={12}>
               <Textarea
                 label="Descrição (opcional)"
-                value={!ticket.count ? '' : ticket.count}
-                onChange={(e) => handleChange('count', Number(e.target.value))}
+                value={!ticket.count ? '' : ticket.description}
+                onChange={(e) => handleChange('description', e.target.value)}
               />
             </GridItem>
             <GridItem>
@@ -155,9 +223,9 @@ export default function EventTicketForm<
                 onChange={(e) => handleChange('limits', { ...ticket.limits, max: Number(e.target.value) })}
               />
             </GridItem>
-          </Grid>
+          </Grid> */}
         </Stack>
       </CardContent>
-    </Card >
+    </Card>
   );
 }

@@ -1,0 +1,19 @@
+.event-ticket-form {
+  &__type {
+    padding: 2px 6px;
+
+    &__button {
+      z-index: 2;
+      background-color: transparent;
+      padding: 10px 12px;
+    }
+
+    &__marker {
+      position: absolute;
+      background-color: var(--background-default);
+      height: 60px;
+      border-radius: 16px;
+      transition: all 0.4s;
+    }
+  }
+}

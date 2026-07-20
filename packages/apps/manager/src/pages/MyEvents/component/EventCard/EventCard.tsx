@@ -124,7 +124,15 @@ export default function EventCard({
               backgroundColor: ({ background }) => background.default,
             }}
           >
-            <Icon name={open ? 'times' : 'ellipsis-v'} />
+            <Icon
+              className={
+                joinClass(
+                  'event-card__header__info__action-button',
+                  open && 'event-card__header__info__action-button--close',
+                )
+              }
+              name={open ? 'times' : 'ellipsis-v'}
+            />
           </ButtonIcon>
         </Stack>
       </Box>

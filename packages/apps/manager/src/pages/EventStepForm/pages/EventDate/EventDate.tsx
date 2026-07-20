@@ -1,3 +1,5 @@
+import { useMemo } from 'react';
+
 import Stack from '@iziui/react/Stack';
 import Input from '@iziui/react/Input';
 import Typography from '@iziui/react/Typography';
@@ -8,11 +10,22 @@ import { Control, Form } from '@iziui/react/lab/Form';
 import { Card, CardContent } from '@iziui/react/Card';
 
 import { useEventForm } from '../../components/EventForm';
+import { FormatIntervalDate } from './formatIntervalDate';
 
 export default function EventDate() {
   const { theme: { palette } } = useTheme();
 
   const { formGroup } = useEventForm();
+
+  const duration = useMemo(() => {
+    const { startDate, startTime, endDate, endTime } = formGroup.values;
+
+    if (!startDate || !startTime || !endDate || !endTime) {
+      return '-';
+    }
+
+    return FormatIntervalDate({ startDate, startTime, endDate, endTime });
+  }, [formGroup]);
 
   return (
     <Slide enter style={{ height: '100%' }}>
@@ -93,7 +106,7 @@ export default function EventDate() {
                   color: palette.secondary.main
                 }}
               >
-                2 dias
+                {duration}
               </strong>
             </Typography>
           </Stack>
