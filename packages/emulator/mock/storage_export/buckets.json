@@ -2,6 +2,9 @@
   "buckets": [
     {
       "id": "eventapp-stg.appspot.com"
+    },
+    {
+      "id": "storage-bucket.appspot.com"
     }
   ]
 }
