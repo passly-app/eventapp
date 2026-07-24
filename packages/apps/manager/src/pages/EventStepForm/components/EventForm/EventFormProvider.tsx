@@ -56,12 +56,11 @@ export default function EventFormProvider({ children }: PropsWithChildren) {
       'capa.jpg',
     );
 
-    console.log('>>> aqui', event);
-
     formGroup.setValues({
       image: file,
       name: event.name,
       address: event.address,
+      tickets: event.tickets,
       subject: toEnum(Subject, event.subject),
       category: toEnum(Category, event.category),
     });

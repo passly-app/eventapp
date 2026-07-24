@@ -76,8 +76,9 @@ export interface Event {
   ownerId: string;
   name: string;
   image: string;
-  status: Status;
   description: string;
+  capacity: number;
+  status: Status;
   subject: Subject;
   category: Category;
   schedule: Schedule;

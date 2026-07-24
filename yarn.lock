@@ -2365,19 +2365,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@iziui/react@npm:^0.0.109-rc":
-  version: 0.0.109-rc
-  resolution: "@iziui/react@npm:0.0.109-rc"
-  dependencies:
-    glob: ^13.0.2
-    react: ^19.2.4
-    react-dom: ^19.2.4
-  peerDependencies:
-    react: ^19.1.0
-    react-dom: ^19.1.0
-  checksum: 8e0597fab7d282a30b560bb06a6b1a91ba3eb1a10112c74d114119247dfae78f98a1cad462be5ff6afbc51d85d79deb65bd8898cc5de2727a28e72d8882fe218
+"@iziui/react@link:../ui/packages/apps/react::locator=eventapp%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@iziui/react@link:../ui/packages/apps/react::locator=eventapp%40workspace%3A."
   languageName: node
-  linkType: hard
+  linkType: soft
 
 "@jest/console@npm:30.4.1":
   version: 30.4.1
@@ -8887,7 +8879,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"glob@npm:^13.0.2, glob@npm:^13.0.3":
+"glob@npm:^13.0.3":
   version: 13.0.6
   resolution: "glob@npm:13.0.6"
   dependencies:
@@ -12872,7 +12864,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-dom@npm:^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0, react-dom@npm:^19.0.0, react-dom@npm:^19.2.4":
+"react-dom@npm:^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0, react-dom@npm:^19.0.0":
   version: 19.2.6
   resolution: "react-dom@npm:19.2.6"
   dependencies:
@@ -13074,7 +13066,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react@npm:^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0, react@npm:^19.0.0, react@npm:^19.2.4":
+"react@npm:^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0, react@npm:^19.0.0":
   version: 19.2.6
   resolution: "react@npm:19.2.6"
   checksum: e250029064bff3f3308ee61e52c44bc9a0c938f6ef11a3f39c31db487ca173eb9b4b0cd3261e32613d3498df0da5586f3c582bc83cef54ad99bc5643772c4535

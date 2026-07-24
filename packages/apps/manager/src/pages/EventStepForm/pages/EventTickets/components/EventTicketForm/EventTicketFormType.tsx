@@ -65,7 +65,7 @@ export default function EventTicketFormType({ isFree, onChange }: EventTicketFor
       className="event-ticket-form__type"
       sx={{
         borderRadius: 1,
-        background: ({ grey }) => grey.opacity,
+        background: ({ background }) => background.muted,
       }}
     >
       <Box

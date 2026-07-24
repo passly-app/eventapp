@@ -121,7 +121,6 @@ function EventStepFormContent() {
         file,
         path: `${user?.id}/${id}/${name}`
       });
-
     }
 
     saveDraft({
@@ -156,7 +155,7 @@ function EventStepFormContent() {
             <Stack flexDirection="row" justifyContent="flex-end">
               <Button
                 color="grey"
-                variant="text"
+                variant="outlined"
                 startIcon={<Icon name="save" />}
                 onClick={handleSaveDraft}
               >

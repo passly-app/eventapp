@@ -18,12 +18,13 @@ export const light: Theme = {
     background: {
       paper: '#FCFAF5',
       default: '#FFF',
+      muted: '#F9F9F9'
     },
     divider: 'rgba(0, 0, 0, 0.12)'
   },
   spacing: 8,
   shape: {
-    radius: 8
+    radius: 18
   },
   typography: {
     family: 'Poppins',

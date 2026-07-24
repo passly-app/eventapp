@@ -23,7 +23,7 @@ function getNewTicket(): Event['tickets'][number] {
     free: true,
     count: 0,
     value: 0,
-    limits: { min: 1, max: 5 },
+    limits: { min: 0, max: 0 },
     schedule: {
       startDate: new Date(),
       endDate: new Date(),
@@ -52,15 +52,14 @@ export default function EventTickets() {
     });
   };
 
-  const updateTicket = <K extends keyof Event['tickets'][number]>(
-    key: K,
+  const updateTicket = (
     index: number,
-    value: Event['tickets'][number][K],
+    value: Event['tickets'][number],
   ) => {
     formGroup.setValues((prev) => {
       if (!prev.tickets) { return prev; }
 
-      prev.tickets[index][key] = value;
+      prev.tickets[index] = value;
 
       return prev;
     });
@@ -79,6 +78,8 @@ export default function EventTickets() {
   };
 
   const cloneTicket = (id: string) => {
+    const _id = uuid();
+
     formGroup.setValues(prev => {
       if (!prev.tickets) { return prev; }
 
@@ -86,7 +87,7 @@ export default function EventTickets() {
 
       if (!picked) { return prev; }
 
-      prev.tickets = [...prev.tickets, { ...picked, id: uuid() }];
+      prev.tickets = [...prev.tickets, { ...picked, id: _id }];
 
       return prev;
     });
@@ -101,16 +102,15 @@ export default function EventTickets() {
             index={index}
             ticket={ticket}
             onCopy={cloneTicket}
-            onChange={updateTicket}
             onDelete={handleModal}
+            onChange={(value) => updateTicket(index, value)}
           />
         )}
       />
       <Button
         fullWidth
         size="large"
-        color="grey"
-        variant="outlined"
+        color="secondary"
         startIcon={<Icon name="plus" />}
         onClick={handleAddTicket}
         sx={{ boxShadow: 'sm' }}

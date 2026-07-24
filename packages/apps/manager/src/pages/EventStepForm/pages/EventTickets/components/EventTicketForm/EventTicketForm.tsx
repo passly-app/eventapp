@@ -13,20 +13,19 @@ import { maskCurrency, sanitizeOnlyNumbers } from '@eventapp/toolkit/mask';
 
 import type { Event } from '@eventapp/modules/event';
 
+import useTicketForm from './useTicketForm';
 import EventTicketFormType from './EventTicketFormType';
 import EventTicketFormLimit from './EventTicketFormLimit';
 import EventTicketFormHeader from './EventTicketFormHeader';
 
 import './EventTicketForm.scss';
+
 interface EventTicketFormProps<E extends Event['tickets'][number]> {
   index: number;
   ticket: E;
-  onChange: <
-    K extends keyof E,
-    T extends E[K]
-  >(key: K, index: number, value: T) => void;
   onDelete: (id: string) => void;
   onCopy: (id: string) => void;
+  onChange: (value: Event['tickets'][number]) => void;
 }
 
 export default function EventTicketForm<
@@ -35,18 +34,23 @@ export default function EventTicketForm<
   index,
   ticket,
   onCopy,
-  onChange,
   onDelete,
+  onChange
 }: EventTicketFormProps<E>) {
-  const handleChange = <
-    K extends keyof E,
-    T extends E[K]
-  >(key: K, value: T) => { onChange(key, index, value); };
-
   const TAX = 0.1;
+
+  const ticketFormGroup = useTicketForm(ticket, onChange);
 
   const handleCopy = () => { onCopy(ticket.id); };
   const handleDelete = () => { onDelete(ticket.id); };
+
+  const handleType = (isFree: boolean) => {
+    if (isFree) {
+      ticketFormGroup.controls.value.reset();
+    }
+
+    ticketFormGroup.setValues({ free: isFree });
+  };
 
   return (
     <Card fullWidth className="event-ticket-form">
@@ -66,50 +70,57 @@ export default function EventTicketForm<
           <Input
             label="Nome do ingresso"
             placeholder="Ex: Pista, VIP ou Meia-entrada"
-            value={ticket.name}
-            onChange={(e) => handleChange('name', e.target.value)}
+            value={ticketFormGroup.values.name}
+            error={ticketFormGroup.controls.name.isInvalid}
+            helperText={ticketFormGroup.controls.name.error}
+            onChange={(e) => ticketFormGroup.setValues({ name: e.target.value })}
           />
           <EventTicketFormType
-            isFree={ticket.free}
-            onChange={(isFree) => handleChange('free', isFree)}
+            isFree={ticketFormGroup.values.free}
+            onChange={(isFree) => handleType(isFree)}
           />
           <Grid>
-            <GridItem lg={6} sm={12}>
+            <GridItem xl={6} sm={12}>
               <Input
-                type="number"
+                type="tel"
                 placeholder="Ex: 100"
                 label="Quantidade de ingressos"
-                onChange={(e) => handleChange('count', Number(e.target.value))}
+                value={ticketFormGroup.values.count}
+                error={ticketFormGroup.controls.count.isInvalid}
+                helperText={ticketFormGroup.controls.count.error}
+                onChange={(e) => ticketFormGroup.setValues({ count: Number(e.target.value) })}
               />
             </GridItem>
             {
-              !ticket.free && (
-                <>
-                  <GridItem lg={6} sm={12}>
-                    <Slide enter>
-                      <Input
-                        type="tel"
-                        label="Preço"
-                        placeholder="R$ 0,00"
-                        value={maskCurrency(ticket.value)}
-                        onChange={(e) => handleChange('value', Number(sanitizeOnlyNumbers(e.target.value)))}
-                      />
-                    </Slide>
-                  </GridItem>
-                  {
-                    Boolean(ticket.value) && (
-                      <GridItem lg={12}>
-                        <Slide enter>
-                          <Alert color="info" icon={<Icon name="info-circle" />}>
-                            <Typography variant="body2">
-                              Taxa de serviço de {maskCurrency(ticket.value * TAX)} por ingresso vendido
-                            </Typography>
-                          </Alert>
-                        </Slide>
-                      </GridItem>
-                    )
-                  }
-                </>
+              !ticketFormGroup.values.free && (
+                <GridItem xl={6} sm={12}>
+                  <Slide enter>
+                    <Input
+                      type="tel"
+                      label="Preço"
+                      placeholder="R$ 0,00"
+                      value={maskCurrency(ticketFormGroup.values.value)}
+                      error={ticketFormGroup.controls.value.isInvalid}
+                      helperText={ticketFormGroup.controls.value.error}
+                      onChange={(e) => ticketFormGroup.setValues({
+                        value: Number(sanitizeOnlyNumbers(e.target.value))
+                      })}
+                    />
+                  </Slide>
+                </GridItem>
+              )
+            }
+            {
+              Boolean(ticketFormGroup.values.value) && (
+                <GridItem xl={12}>
+                  <Slide enter>
+                    <Alert color="info" icon={<Icon name="info-circle" />}>
+                      <Typography variant="body2">
+                        Taxa de serviço de {maskCurrency(ticketFormGroup.values.value * TAX)} por ingresso vendido
+                      </Typography>
+                    </Alert>
+                  </Slide>
+                </GridItem>
               )
             }
           </Grid>
@@ -117,113 +128,15 @@ export default function EventTicketForm<
             label="Descrição (opcional)"
             placeholder="Conte o que está incluso nesse ingresso"
             helperText="0/240 caracteres"
+            value={ticketFormGroup.values.description}
+            onChange={(e) => ticketFormGroup.setValues({ description: e.target.value })}
           />
-          <EventTicketFormLimit />
-          {/* <Grid lg={6}>
-            <GridItem alignSelf="flex-end">
-              <Stack gap={8} style={{ marginBottom: 16 }}>
-                <Typography variant="body2" style={{ fontSize: 12 }}>
-                  Tipo de ingresso
-                </Typography>
-                <Stack flexDirection="row">
-                  <Chip
-                    fullWidth
-                    size="large"
-                    label="Pago"
-                    color="secondary"
-                    variant={!ticket.free ? 'contained' : 'outlined'}
-                    onClick={() => handleChange('free', false)}
-                    style={{ fontSize: 14 }}
-                  />
-                  <Chip
-                    fullWidth
-                    size="large"
-                    label="Gratuito"
-                    color="secondary"
-                    variant={ticket.free ? 'contained' : 'outlined'}
-                    onClick={() => handleChange('free', true)}
-                    style={{ fontSize: 14 }}
-                  />
-                </Stack>
-              </Stack>
-            </GridItem>
-            <GridItem style={{ minHeight: 71 }}>
-              <Slide enter={!ticket.free} direction="bottom">
-                <Input
-                  label="Preço"
-                  value={maskCurrency(ticket.value)}
-                  onChange={(e) => handleChange('value', Number(sanitizeOnlyNumbers(e.target.value)))}
-                />
-              </Slide>
-            </GridItem>
-            <GridItem lg={12}>
-              <Alert color="grey" style={{ boxShadow: 'none' }}>
-                <Stack gap={4}>
-                  <Stack flexDirection="row" justifyContent="space-between" alignItems="center">
-                    <Typography variant="body2">Valor a receber:</Typography>
-                    <Typography variant="body2">{maskCurrency(ticket.value)}</Typography>
-                  </Stack>
-                  <Stack flexDirection="row" justifyContent="space-between" alignItems="center">
-                    <Stack
-                      gap={8}
-                      alignItems="center"
-                      flexDirection="row"
-                      style={{ width: 'fit-content' }}
-                    >
-                      <Typography variant="body2">Taxa:</Typography>
-                      <Icon
-                        name="info-circle"
-                        color="grey"
-                        size={16}
-                      />
-                    </Stack>
-                    <Typography variant="body2">
-                      {maskCurrency(ticket.value * TAX)}
-                    </Typography>
-                  </Stack>
-                  <Divider />
-                  <Stack flexDirection="row" justifyContent="space-between" alignItems="center">
-                    <Typography variant="body2">Valor final para o participante:</Typography>
-                    <Typography variant="body2">{maskCurrency(ticket.value * (TAX + 1))}</Typography>
-                  </Stack>
-                </Stack>
-              </Alert>
-            </GridItem>
-            <GridItem lg={12}>
-              <Input
-                type="tel"
-                label="Quantidade disponível"
-                placeholder="Ex: 100"
-                value={!ticket.count ? '' : ticket.count}
-                onChange={(e) => handleChange('count', Number(e.target.value))}
-              />
-            </GridItem>
-            <GridItem lg={12}>
-              <Textarea
-                label="Descrição (opcional)"
-                value={!ticket.count ? '' : ticket.description}
-                onChange={(e) => handleChange('description', e.target.value)}
-              />
-            </GridItem>
-            <GridItem>
-              <Input
-                type="tel"
-                label="Mínimo por compra"
-                placeholder="Ex: 1"
-                value={ticket.limits.min}
-                onChange={(e) => handleChange('limits', { ...ticket.limits, min: Number(e.target.value) })}
-              />
-            </GridItem>
-            <GridItem>
-              <Input
-                type="tel"
-                label="Máximo por compra"
-                placeholder="Ex: 5"
-                value={ticket.limits.max}
-                onChange={(e) => handleChange('limits', { ...ticket.limits, max: Number(e.target.value) })}
-              />
-            </GridItem>
-          </Grid> */}
+          <EventTicketFormLimit
+            formGroup={ticketFormGroup}
+            onChange={(key, value) => ticketFormGroup.setValues({
+              limits: { ...ticketFormGroup.values.limits, [key]: value }
+            })}
+          />
         </Stack>
       </CardContent>
     </Card>

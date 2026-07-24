@@ -39,7 +39,7 @@ export default function EventDate() {
               </Typography>
             </Stack>
             <Form formGroup={formGroup}>
-              <Grid lg={6} sm={12}>
+              <Grid xl={6} sm={12}>
                 <GridItem>
                   <Control
                     controlName="startDate"

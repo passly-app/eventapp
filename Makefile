@@ -73,6 +73,23 @@ clean-modules:
 	$(call delete_dependencies,resources)
 	@printf "${SUCCESS_TEXT}Dependencies deleted successfully ${RESET_TEXT}\n";
 
+# -------------------- LINK UI (@iziui/react) ------------------- #
+
+# Caminho relativo (a partir da raiz do eventapp) para o pacote react do projeto ui.
+UI_REACT_PATH := ../ui/packages/apps/react
+
+link-ui:
+	@node -e "const fs=require('fs');const p='./package.json';const j=JSON.parse(fs.readFileSync(p));j.resolutions=j.resolutions||{};j.resolutions['@iziui/react']='link:$(UI_REACT_PATH)';fs.writeFileSync(p,JSON.stringify(j,null,2)+'\n')"
+	@printf "${WARN_TEXT}Linking @iziui/react -> $(UI_REACT_PATH)${RESET_TEXT}\n"
+	@$(RUN) install
+	@printf "${SUCCESS_BOX} SUCCESS ${RESET_BOX}: @iziui/react linkado. Rode 'make ui-watch' para build ao vivo.\n"
+
+unlink-ui:
+	@node -e "const fs=require('fs');const p='./package.json';const j=JSON.parse(fs.readFileSync(p));if(j.resolutions){delete j.resolutions['@iziui/react'];if(Object.keys(j.resolutions).length===0)delete j.resolutions;}fs.writeFileSync(p,JSON.stringify(j,null,2)+'\n')"
+	@printf "${WARN_TEXT}Removendo link do @iziui/react (voltando ao registry)${RESET_TEXT}\n"
+	@$(RUN) install
+	@printf "${SUCCESS_BOX} SUCCESS ${RESET_BOX}: @iziui/react voltou ao registry.\n"
+
 # -------------------- EMULADOR ------------------- #
 
 # CUIDADO: Este comando irá sobrescrever o path mock
