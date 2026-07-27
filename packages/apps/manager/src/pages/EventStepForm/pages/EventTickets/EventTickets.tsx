@@ -5,6 +5,7 @@ import Stack from '@iziui/react/Stack';
 import Button from '@iziui/react/Button';
 import Typography from '@iziui/react/Typography';
 import { Modal, ModalFooter, useModal } from '@iziui/react/Modal';
+import Slide from '@iziui/react/animations/Slide';
 
 import { uuid } from '@eventapp/toolkit/uuid';
 
@@ -94,48 +95,57 @@ export default function EventTickets() {
   };
 
   return (
-    <Stack>
-      <EventTicketCapability />
-      <EventTicketList
-        renderList={(ticket, index) => (
-          <EventTicketForm
-            index={index}
-            ticket={ticket}
-            onCopy={cloneTicket}
-            onDelete={handleModal}
-            onChange={(value) => updateTicket(index, value)}
-          />
-        )}
-      />
-      <Button
-        fullWidth
-        size="large"
-        color="secondary"
-        startIcon={<Icon name="plus" />}
-        onClick={handleAddTicket}
-        sx={{ boxShadow: 'sm' }}
-      >
-        Adicionar ingresso
-      </Button>
-      <Modal
-        isOpen={isOpen}
-        title={<Typography variant="h6">Atenção</Typography>}
-        subtitle={
-          <Typography variant="subtitle2" weight="normal">
-            Tem certeza que deseja remover esse ingresso
-          </Typography>
-        }
-        onClose={toggleModal}
-      >
-        <ModalFooter>
-          <Button variant="text" color="grey" onClick={toggleModal}>
-            Cancelar
-          </Button>
-          <Button variant="contained" color="error" onClick={deleteTicket}>
-            Excluir
-          </Button>
-        </ModalFooter>
-      </Modal>
-    </Stack>
+    <Slide enter>
+      <Stack>
+        <EventTicketCapability
+          value={formGroup.values.capacity}
+          error={formGroup.controls.capacity?.isInvalid}
+          helperText={formGroup.controls.capacity?.error}
+          onChange={(value) => {
+            formGroup.setValues({ capacity: value });
+          }}
+        />
+        <EventTicketList
+          renderList={(ticket, index) => (
+            <EventTicketForm
+              index={index}
+              ticket={ticket}
+              onCopy={cloneTicket}
+              onDelete={handleModal}
+              onChange={(value) => updateTicket(index, value)}
+            />
+          )}
+        />
+        <Button
+          fullWidth
+          size="large"
+          color="secondary"
+          startIcon={<Icon name="plus" />}
+          onClick={handleAddTicket}
+          sx={{ boxShadow: 'sm' }}
+        >
+          Adicionar ingresso
+        </Button>
+        <Modal
+          isOpen={isOpen}
+          title={<Typography variant="h6">Atenção</Typography>}
+          subtitle={
+            <Typography variant="subtitle2" weight="normal">
+              Tem certeza que deseja remover esse ingresso
+            </Typography>
+          }
+          onClose={toggleModal}
+        >
+          <ModalFooter>
+            <Button variant="text" color="grey" onClick={toggleModal}>
+              Cancelar
+            </Button>
+            <Button variant="contained" color="error" onClick={deleteTicket}>
+              Excluir
+            </Button>
+          </ModalFooter>
+        </Modal>
+      </Stack>
+    </Slide>
   );
 }

@@ -27,5 +27,8 @@
   "packageManager": "yarn@3.2.1",
   "dependencies": {
     "@mdxeditor/editor": "^4.0.1"
+  },
+  "resolutions": {
+    "@iziui/react": "link:../ui/packages/apps/react"
   }
 }

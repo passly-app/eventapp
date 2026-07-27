@@ -1,6 +1,6 @@
 .event-ticket-form {
   &__type {
-    padding: 2px 6px;
+    padding: 6px 12px;
 
     &__button {
       z-index: 2;
@@ -15,6 +15,7 @@
       height: 60px;
       border-radius: 16px;
       transition: all 0.4s;
+      border: 1px solid var(--divider);
     }
   }
 }

@@ -32,12 +32,14 @@ export default function EventTicketFormLimit({
     <Alert
       sx={{
         background: ({ background }) => background.muted,
+        borderColor: ({ divider }) => divider,
       }}
+      style={{ border: '1px solid' }}
     >
       <Stack>
         <Stack flexDirection="row" alignItems="flex-start" justifyContent="space-between">
           <Stack gap={0}>
-            <Typography variant="body1" color="text.secondary" style={{ fontSize: 14 }}>
+            <Typography variant="body1" style={{ fontSize: 14 }}>
               Limitar quantidade por compra
             </Typography>
             <Typography variant="body2" color="text.secondary" style={{ fontSize: 12 }}>

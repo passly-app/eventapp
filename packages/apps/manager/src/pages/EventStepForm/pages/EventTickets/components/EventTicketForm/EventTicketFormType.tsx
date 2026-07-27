@@ -41,11 +41,11 @@ interface EventTicketFormTypeProps {
 export default function EventTicketFormType({ isFree, onChange }: EventTicketFormTypeProps) {
   const id = useMemo(() => `marker-${uuid()}`, []);
 
-  useListenerResized(() => setBorderLine(isFree), []);
+  useListenerResized(() => setMarker(isFree), []);
 
-  useEffect(() => { setBorderLine(isFree); }, [isFree]);
+  useEffect(() => { setMarker(isFree); }, [isFree]);
 
-  const setBorderLine = (_isFree: boolean) => {
+  const setMarker = (_isFree: boolean) => {
     const label = `ticket-type-button-${_isFree ? 'free' : 'not-free'}`;
 
     const element = document.querySelector(`#${label}`) as HTMLElement;
@@ -65,8 +65,10 @@ export default function EventTicketFormType({ isFree, onChange }: EventTicketFor
       className="event-ticket-form__type"
       sx={{
         borderRadius: 1,
+        borderColor: ({ divider }) => divider,
         background: ({ background }) => background.muted,
       }}
+      style={{ border: '1px solid' }}
     >
       <Box
         id={id}

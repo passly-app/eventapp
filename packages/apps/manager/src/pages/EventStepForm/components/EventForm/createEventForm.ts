@@ -16,14 +16,10 @@ export function createEventForm() {
       name: { defaultValue: '' },
       subject: { defaultValue: undefined },
       category: { defaultValue: undefined },
+      capacity: { defaultValue: undefined },
       image: { defaultValue: undefined },
       description: { defaultValue: '' },
-      tickets: {
-        defaultValue: [],
-        validators: [
-
-        ]
-      },
+      tickets: { defaultValue: [], },
       address: { defaultValue: undefined },
       startDate: { defaultValue: undefined },
       startTime: { defaultValue: undefined },

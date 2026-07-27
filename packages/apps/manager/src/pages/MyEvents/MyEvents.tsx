@@ -13,7 +13,7 @@ import { wait } from '@eventapp/toolkit/promise';
 import { useAuth } from '@eventapp/modules/auth';
 import { useEvent } from '@eventapp/modules/event';
 
-import EventCard from './component/EventCard';
+import EventCard from './components/EventCard';
 
 export default function MyEvents() {
   const { user } = useAuth();

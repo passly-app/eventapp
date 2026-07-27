@@ -61,8 +61,14 @@ export default function EventFormProvider({ children }: PropsWithChildren) {
       name: event.name,
       address: event.address,
       tickets: event.tickets,
+      capacity: event.capacity,
+      description: event.description,
       subject: toEnum(Subject, event.subject),
       category: toEnum(Category, event.category),
+      endDate: event.schedule.endDate.toISOString().split('T')[0],
+      endTime: event.schedule.endDate.toISOString().split('T')[1].slice(0, 5),
+      startDate: event.schedule.startDate.toISOString().split('T')[0],
+      startTime: event.schedule.startDate.toISOString().split('T')[1].slice(0, 5),
     });
   }
 

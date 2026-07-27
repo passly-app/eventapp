@@ -33,7 +33,7 @@ enum CreateEvenMap {
   'revisao',
 }
 
-function getFallbackDate(date?: Date, time?: Date) {
+function getFallbackDate(date?: string, time?: string) {
   return {
     date: date ??
       formatDate(new Date(), {
@@ -90,7 +90,7 @@ function EventStepFormContent() {
     navigate(path);
   };
 
-  const handleSaveDraft = async () => {
+  const preAction = async () => {
     const values = formGroup.values;
 
     if (!values.name) {
@@ -123,11 +123,22 @@ function EventStepFormContent() {
       });
     }
 
+    return { id, url, values, start, end, };
+  };
+
+  const handleSaveDraft = async () => {
+    const pre = await preAction();
+
+    if (!pre) { return; }
+
+    const { id, url, values, start, end } = pre;
+
     saveDraft({
       id,
       image: url,
       ownerId: user?.id,
       name: values.name ?? '',
+      capacity: values.capacity ?? Infinity,
       subject: values.subject ? toEnum(Subject, values.subject) : '' as any,
       category: values.category ? toEnum(Category, values.category) : '' as any,
       description: values.description ?? '',

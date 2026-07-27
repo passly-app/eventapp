@@ -1,10 +1,10 @@
 import { pluralize } from '@eventapp/toolkit/string';
 
 interface FormatIntervalDateProps {
-  startDate: Date;
-  startTime: Date;
-  endDate: Date;
-  endTime: Date;
+  startDate: string;
+  startTime: string;
+  endDate: string;
+  endTime: string;
 }
 
 export function FormatIntervalDate({
