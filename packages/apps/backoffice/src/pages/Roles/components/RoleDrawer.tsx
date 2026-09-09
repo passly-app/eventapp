@@ -74,7 +74,7 @@ export default function UserDrawer({ isOpen, role, onToggle }: HelperDrawerProps
       <DeleteRoleModal
         role={role}
         isOpen={open}
-        onToggleModal={toggleModal}
+        onToggle={toggleModal}
         onToggleDrawer={onToggle}
       />
     </>

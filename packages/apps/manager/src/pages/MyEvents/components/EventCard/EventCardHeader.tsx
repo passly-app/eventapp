@@ -6,16 +6,17 @@ import Icon from '@iziui/react/Icon';
 import Stack from '@iziui/react/Stack';
 import ButtonIcon from '@iziui/react/ButtonIcon';
 import { getLinearGradient, joinClass } from '@iziui/react/core';
-import { Colors } from '@iziui/react/theme';
+import type { Colors } from '@iziui/react/theme';
 
-import { type Event } from '@eventapp/modules/event';
+import type { Event } from '@eventapp/modules/event';
 
 function mapLabel(
   status: Event['status']
 ) {
   const map: { [X in Event['status']]: string } = {
     draft: 'Rascunho',
-    published: 'Publicado'
+    published: 'Publicado',
+    disabled: 'Desativado'
   };
   return map[status];
 }
@@ -23,7 +24,8 @@ function mapLabel(
 function statusMap(status: Event['status']) {
   const map: { [X in Event['status']]: Colors } = {
     draft: 'info',
-    published: 'success'
+    published: 'success',
+    disabled: 'warning'
   };
   return map[status];
 }
@@ -97,15 +99,7 @@ export default function EventCardHeader({
             backgroundColor: ({ background }) => background.default,
           }}
         >
-          <Icon
-            className={
-              joinClass(
-                'event-card__header__info__action-button',
-                open && 'event-card__header__info__action-button--close',
-              )
-            }
-            name={open ? 'times' : 'ellipsis-v'}
-          />
+          <Icon name={open ? 'times' : 'ellipsis-v'} />
         </ButtonIcon>
       </Stack>
     </Box>

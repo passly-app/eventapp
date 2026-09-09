@@ -4,15 +4,16 @@ import { generatePath, useNavigate } from 'react-router-dom';
 import Stack from '@iziui/react/Stack';
 import Divider from '@iziui/react/Divider';
 import { useMenu } from '@iziui/react/Menu';
+import { useModal } from '@iziui/react/Modal';
 import { Card, CardContent } from '@iziui/react/Card';
 
 import { useEvent, type Event } from '@eventapp/modules/event';
 
 import InfoSlot from './InfoSlot';
-import StatusSlot from './StatusSlot';
 import ActionSlot from './ActionSlot';
 import EventCardHeader from './EventCardHeader';
 import { EventCardMenu } from './EventCardMenu';
+import DeleteEventModal from '../DeleteEventModal';
 
 import './EventCard.scss';
 
@@ -26,8 +27,9 @@ export default function EventCard({
   const navigate = useNavigate();
 
   const [open, el, toggle] = useMenu();
+  const [openModal, toggleModal] = useModal();
 
-  const { deleteEvent } = useEvent();
+  const { updateEvent, copyEvent } = useEvent();
 
   const [loading, setLoading] = useState(false);
 
@@ -39,7 +41,18 @@ export default function EventCard({
 
   const handleDelete = () => {
     setLoading(true);
-    deleteEvent(event.id)
+    toggleModal();
+  };
+
+  const handleChangeStatus = (status: Event['status']) => {
+    setLoading(true);
+    updateEvent({ ...event, status })
+      .finally(() => setLoading(false));
+  };
+
+  const handleDuplicate = () => {
+    setLoading(true);
+    copyEvent(event)
       .finally(() => setLoading(false));
   };
 
@@ -50,11 +63,11 @@ export default function EventCard({
         open={open}
         toggle={toggle}
       />
+
       <CardContent style={{ height: '100%' }}>
         <Stack gap={8} justifyContent="space-between" style={{ height: '100%' }}>
           <InfoSlot {...event} />
           <Divider />
-          <StatusSlot />
           <ActionSlot goToEvent={goToEdit} />
         </Stack>
       </CardContent>
@@ -63,9 +76,17 @@ export default function EventCard({
         el={el}
         open={open}
         event={event}
-        toggle={toggle}
         loading={loading}
-        handleDelete={handleDelete}
+        onToggle={toggle}
+        onDelete={handleDelete}
+        onDuplicate={handleDuplicate}
+        onChangeStatus={handleChangeStatus}
+      />
+
+      <DeleteEventModal
+        event={event}
+        isOpen={openModal}
+        onToggle={toggleModal}
       />
     </Card>
   );

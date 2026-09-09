@@ -42,7 +42,7 @@ export enum Category {
   RETREAT_OR_CAMP,
 }
 
-type Status = 'published' | 'draft';
+type Status = 'published' | 'draft' | 'disabled';
 
 interface Schedule {
   startDate: Date;

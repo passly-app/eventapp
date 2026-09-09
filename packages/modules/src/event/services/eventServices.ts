@@ -23,6 +23,10 @@ export default class EventServices {
 
   constructor(private db: DB) { }
 
+  public generateId(name: string) {
+    return `${slug(name)}-${hash(uuid())}`;
+  }
+
   public async getDetails(eventId: string) {
     return this.db.getItem<EventFirebase>({
       path: EventServices.PATH,
@@ -47,8 +51,24 @@ export default class EventServices {
   }
 
   public async create(event: Omit<Event, 'id'>) {
-    const id = `${slug(event.name)}-${hash(uuid())}`;
+    const id = this.generateId(event.name);
     const newEvent: Event = { ...event, id };
+
+    return this.db.setItem<Event>({
+      data: newEvent,
+      path: EventServices.PATH,
+      pathSegments: [id],
+    }).then(() => newEvent);
+  }
+
+  public async copy(event: Omit<Event, 'id'>) {
+    const id = this.generateId(event.name);
+    const newEvent: Event = {
+      ...event,
+      id,
+      status: 'draft',
+      name: `${event.name} - Copy`,
+    };
 
     return this.db.setItem<Event>({
       data: newEvent,
@@ -78,6 +98,14 @@ export default class EventServices {
     return this.db.deleteItem({
       path: EventServices.PATH,
       pathSegments: [eventId],
+    });
+  }
+
+  public update(event: Event) {
+    return this.db.update({
+      data: event,
+      path: EventServices.PATH,
+      pathSegments: [event.id],
     });
   }
 }

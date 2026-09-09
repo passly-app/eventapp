@@ -1,9 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import Icon from '@iziui/react/Icon';
 import Stack from '@iziui/react/Stack';
-import Input from '@iziui/react/Input';
-import Button from '@iziui/react/Button';
 import Loading from '@iziui/react/Loading';
 import Typography from '@iziui/react/Typography';
 import { Grid, GridItem } from '@iziui/react/Grid';
@@ -13,13 +10,18 @@ import { wait } from '@eventapp/toolkit/promise';
 import { useAuth } from '@eventapp/modules/auth';
 import { useEvent } from '@eventapp/modules/event';
 
+import { useFilter } from '@eventapp/common/hooks';
+
 import EventCard from './components/EventCard';
+import MyEventsFilter, { type FilterData } from './components/MyEventsFilter';
 
 export default function MyEvents() {
   const { user } = useAuth();
   const { myEvents, getMyEvents } = useEvent();
 
   const [loading, setLoading] = useState(true);
+
+  const { filter, filtered, reset } = useFilter(myEvents, []);
 
   useEffect(() => {
     if (!user?.id) { return; }
@@ -29,6 +31,10 @@ export default function MyEvents() {
         wait(() => setLoading(false), 500);
       });
   }, [user]);
+
+  const handleFilter = (data: FilterData) => {
+    console.log(data);
+  };
 
   return (
     <Stack>
@@ -48,32 +54,18 @@ export default function MyEvents() {
       {
         !loading && (
           <Stack>
-            <Grid>
-              <GridItem xl={10} sm={7}>
-                <Input
-                  placeholder="Buscar por nome..."
-                  startIcon={<Icon size={20} name="search" color="grey" />}
-                />
-              </GridItem>
-              <GridItem xl={2} sm={5}>
-                <Button
-                  fullWidth
-                  variant="outlined"
-                  startIcon={<Icon name="filter" />}
-                >
-                  Filtros
-                </Button>
-              </GridItem>
-            </Grid>
+            <MyEventsFilter onFilter={handleFilter} />
             <Grid xl={4} md={6} sm={12}>
               {
-                myEvents.map(event => (
-                  <GridItem key={event.id}>
-                    <EventCard
-                      event={event}
-                    />
-                  </GridItem>
-                ))
+                filtered
+                  .sort((a, b) => a.name > b.name ? 1 : -1)
+                  .map(event => (
+                    <GridItem key={event.id}>
+                      <EventCard
+                        event={event}
+                      />
+                    </GridItem>
+                  ))
               }
             </Grid>
           </Stack>

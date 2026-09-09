@@ -8,20 +8,10 @@ import Loading from '@iziui/react/Loading';
 import ButtonIcon from '@iziui/react/ButtonIcon';
 import Slide from '@iziui/react/animations/Slide';
 import useResize from '@iziui/react/hooks/useResize';
-import { useToast } from '@iziui/react/Toast';
 import { TabButton, Tabs, useTabs } from '@iziui/react/Tabs';
 import { Menu, MenuButton, useMenu } from '@iziui/react/Menu';
 
-import { slug } from '@eventapp/toolkit/string';
-import { formatDate } from '@eventapp/toolkit/date';
-import { hash, uuid } from '@eventapp/toolkit/uuid';
-import { getExtension } from '@eventapp/toolkit/file';
 import { toEnum, byEnum } from '@eventapp/toolkit/enum';
-
-import { useAuth } from '@eventapp/modules/auth';
-import { Category, Subject, useEvent } from '@eventapp/modules/event';
-
-import { storage } from '@/services/core';
 
 import EventFormProvider, { useEventForm } from './components/EventForm';
 
@@ -33,40 +23,17 @@ enum CreateEvenMap {
   'revisao',
 }
 
-function getFallbackDate(date?: string, time?: string) {
-  return {
-    date: date ??
-      formatDate(new Date(), {
-        locale: 'sv-SE',
-        options: { year: 'numeric', month: '2-digit', day: '2-digit' }
-      }),
-    time: time ??
-      formatDate(new Date(), {
-        locale: 'sv-SE',
-        options: {
-          hour: '2-digit',
-          minute: '2-digit',
-          hour12: false,
-        }
-      }),
-  };
-}
-
 function EventStepFormContent() {
   const location = useLocation();
   const navigate = useNavigate();
   const params = useParams();
 
-  const { addToast } = useToast();
   const [open, el, toggle] = useMenu();
-
   const [setTab, currentTab] = useTabs(0);
 
-  const { user } = useAuth();
-  const { saveDraft } = useEvent();
+  const { saveDraft } = useEventForm();
 
   const [isMobile, setIsMobile] = useState(false);
-  const [eventId, setEventId] = useState(params.eventId);
 
   useResize({
     onXl() { setIsMobile(false); },
@@ -90,65 +57,9 @@ function EventStepFormContent() {
     navigate(path);
   };
 
-  const preAction = async () => {
-    const values = formGroup.values;
-
-    if (!values.name) {
-      addToast({
-        delay: 50000,
-        color: 'warning',
-        message: 'É preciso adicionar um "nome" para salvar o rascunho',
-        icon: <Icon name="info-circle" />
-      });
-      toggle();
-      return;
-    }
-
-    const id = eventId || `${slug(values.name)}-${hash(uuid())}`;
-
-    const file = values.image;
-
-    const start = getFallbackDate(values.startDate, values.startTime);
-    const end = getFallbackDate(values.endDate, values.endTime);
-
-    let url = '';
-
-    if (file) {
-      const ext = getExtension(file.name);
-      const name = `capa.${ext}`;
-
-      url = await storage.upload({
-        file,
-        path: `${user?.id}/${id}/${name}`
-      });
-    }
-
-    return { id, url, values, start, end, };
-  };
-
-  const handleSaveDraft = async () => {
-    const pre = await preAction();
-
-    if (!pre) { return; }
-
-    const { id, url, values, start, end } = pre;
-
-    saveDraft({
-      id,
-      image: url,
-      ownerId: user?.id,
-      name: values.name ?? '',
-      capacity: values.capacity ?? Infinity,
-      subject: values.subject ? toEnum(Subject, values.subject) : '' as any,
-      category: values.category ? toEnum(Category, values.category) : '' as any,
-      description: values.description ?? '',
-      tickets: values.tickets ?? [],
-      address: values.address ?? {} as any,
-      schedule: {
-        startDate: new Date(`${start.date}T${start.time}`),
-        endDate: new Date(`${end.date}T${end.time}`),
-      },
-    }).then(({ id }) => setEventId(id));
+  const handleSaveDraft = () => {
+    saveDraft()
+      .then(() => toggle());
   };
 
   return (
@@ -168,7 +79,7 @@ function EventStepFormContent() {
                 color="grey"
                 variant="outlined"
                 startIcon={<Icon name="save" />}
-                onClick={handleSaveDraft}
+                onClick={saveDraft}
               >
                 Salvar rascunho
               </Button>
