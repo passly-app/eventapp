@@ -93,9 +93,11 @@ unlink-ui:
 # -------------------- EMULADOR ------------------- #
 
 # CUIDADO: Este comando irá sobrescrever o path mock
-db-write:
-	@cd packages/emulator && firebase emulators:start --import ./mock --export-on-exit ./mock
-
-db:
+emulator:
 	@printf "${WARN_TEXT} Starting Firestore emulator...${RESET_TEXT}"
-	@cd packages/emulator && firebase emulators:start --import ./mock
+	@cd packages/emulator && yarn firebase emulators:start \
+		--import ./mock \
+		$(if $(filter crud,$(MAKECMDGOALS)),--export-on-exit ./mock,)
+
+crud:
+	@:
